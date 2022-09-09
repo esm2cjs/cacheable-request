@@ -8,6 +8,8 @@ sed -i 's#^build/$##' .gitignore
 
 TSCONFIG=$(cat tsconfig.build.json | jq '
 	.compilerOptions.outDir = "build/esm"
+	| .compilerOptions.target = "ES2020"
+	| .compilerOptions.module = "ES2020"
 ')
 echo "$TSCONFIG" > tsconfig.build.json
 
