@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/types.ts"],
+  "sourcesContent": [null],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;;;;;;AAyHM,MAAO,qBAAqB,MAAK;EACtC,YAAY,OAAY;AACvB,UAAM,MAAM,OAAO;AACnB,WAAO,OAAO,MAAM,KAAK;EAC1B;;AAEK,MAAO,mBAAmB,MAAK;EACpC,YAAY,OAAY;AACvB,UAAM,MAAM,OAAO;AACnB,WAAO,OAAO,MAAM,KAAK;EAC1B;;",
+  "names": []
+}

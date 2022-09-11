@@ -1,32 +1,19 @@
-/// <reference types="node" />
-/// <reference types="node" />
 import EventEmitter from 'node:events';
-declare const CacheableRequest: {
-    (request: Function, cacheAdapter?: any): (options: any, cb?: ((response: Record<string, unknown>) => void) | undefined) => EventEmitter;
-    addHook(name: string, fn: Function): void;
-    removeHook(name: string): boolean;
-    getHook(name: string): any;
-    runHook(name: string, response: any): Promise<any>;
-    RequestError: {
-        new (error: any): {
-            name: string;
-            message: string;
-            stack?: string | undefined;
-        };
-        captureStackTrace(targetObject: object, constructorOpt?: Function | undefined): void;
-        prepareStackTrace?: ((err: Error, stackTraces: NodeJS.CallSite[]) => any) | undefined;
-        stackTraceLimit: number;
-    };
-    CacheError: {
-        new (error: any): {
-            name: string;
-            message: string;
-            stack?: string | undefined;
-        };
-        captureStackTrace(targetObject: object, constructorOpt?: Function | undefined): void;
-        prepareStackTrace?: ((err: Error, stackTraces: NodeJS.CallSite[]) => any) | undefined;
-        stackTraceLimit: number;
-    };
-};
+import { RequestOptions, ServerResponse } from 'node:http';
+import { Options as CacheSemanticsOptions } from 'http-cache-semantics';
+import Response from '@esm2cjs/responselike';
+import { RequestFn, StorageAdapter, Options } from './types.js';
+declare type Func = (...args: any[]) => any;
+declare class CacheableRequest {
+    cache: StorageAdapter;
+    request: RequestFn;
+    hooks: Map<string, Func>;
+    constructor(request: RequestFn, cacheAdapter?: StorageAdapter | string);
+    createCacheableRequest: () => (options: (Options & RequestOptions & CacheSemanticsOptions) | string | URL, cb?: ((response: ServerResponse | Response) => void) | undefined) => EventEmitter;
+    addHook: (name: string, fn: Func) => void;
+    removeHook: (name: string) => boolean;
+    getHook: (name: string) => Func | undefined;
+    runHook: (name: string, response: any) => Promise<any>;
+}
 export default CacheableRequest;
 //# sourceMappingURL=index.d.ts.map
