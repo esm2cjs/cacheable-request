@@ -7,11 +7,11 @@ import { URL } from 'node:url';
 import { EventEmitter } from 'node:events';
 import { Buffer } from 'node:buffer';
 import { Store } from 'keyv';
-import { Options as CacheSemanticsOptions } from 'http-cache-semantics';
 import ResponseLike from '@esm2cjs/responselike';
 export declare type RequestFn = typeof request;
 export declare type RequestFunction = typeof request;
-export declare type CacheableRequestFunction = (options: (Options & RequestOptions & CacheSemanticsOptions) | string | URL, cb?: (response: ServerResponse | typeof ResponseLike) => void) => EventEmitter;
+export declare type CacheableRequestFunction = (options: CacheableOptions, cb?: (response: ServerResponse | typeof ResponseLike) => void) => Emitter;
+export declare type CacheableOptions = Options & RequestOptions | string | URL;
 export declare type StorageAdapter = Store<any>;
 export interface Options {
     /**

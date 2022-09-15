@@ -266,4 +266,5 @@ const convertHeaders = (headers) => {
     return result;
 };
 export default CacheableRequest;
+export * from './types.js';
 //# sourceMappingURL=index.js.map

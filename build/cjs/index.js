@@ -17,6 +17,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default"));
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
@@ -38,6 +39,7 @@ var import_responselike = __toESM(require("@esm2cjs/responselike"));
 var import_keyv = __toESM(require("keyv"));
 var import_mimic_response = __toESM(require("@esm2cjs/mimic-response"));
 var import_types = require("./types.js");
+__reExport(esm_exports, require("./types.js"), module.exports);
 class CacheableRequest {
   constructor(request, cacheAdapter) {
     this.hooks = /* @__PURE__ */ new Map();
