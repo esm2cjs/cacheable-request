@@ -4,10 +4,10 @@ import { RequestFn, StorageAdapter, CacheableOptions, Emitter } from './types.js
 declare type Func = (...args: any[]) => any;
 declare class CacheableRequest {
     cache: StorageAdapter;
-    request: RequestFn;
+    cacheRequest: RequestFn;
     hooks: Map<string, Func>;
-    constructor(request: RequestFn, cacheAdapter?: StorageAdapter | string);
-    createCacheableRequest: () => (options: CacheableOptions, cb?: ((response: ServerResponse | typeof Response) => void) | undefined) => Emitter;
+    constructor(cacheRequest: RequestFn, cacheAdapter?: StorageAdapter | string);
+    request: () => (options: CacheableOptions, cb?: ((response: ServerResponse | typeof Response) => void) | undefined) => Emitter;
     addHook: (name: string, fn: Func) => void;
     removeHook: (name: string) => boolean;
     getHook: (name: string) => Func | undefined;

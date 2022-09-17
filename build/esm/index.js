@@ -10,9 +10,9 @@ import Keyv from 'keyv';
 import mimicResponse from '@esm2cjs/mimic-response';
 import { CacheError, RequestError } from './types.js';
 class CacheableRequest {
-    constructor(request, cacheAdapter) {
+    constructor(cacheRequest, cacheAdapter) {
         this.hooks = new Map();
-        this.createCacheableRequest = () => (options, cb) => {
+        this.request = () => (options, cb) => {
             let url;
             if (typeof options === 'string') {
                 url = normalizeUrlObject(urlLib.parse(options));
@@ -140,7 +140,7 @@ class CacheableRequest {
                     }
                 };
                 try {
-                    const request_ = this.request(options_, handler);
+                    const request_ = this.cacheRequest(options_, handler);
                     request_.once('error', requestErrorCallback);
                     request_.once('abort', requestErrorCallback);
                     ee.emit('request', request_);
@@ -225,8 +225,8 @@ class CacheableRequest {
                 namespace: 'cacheable-request',
             });
         }
-        this.createCacheableRequest = this.createCacheableRequest.bind(this);
-        this.request = request;
+        this.request = this.request.bind(this);
+        this.cacheRequest = cacheRequest;
     }
 }
 const entries = Object.entries;

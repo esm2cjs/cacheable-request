@@ -41,9 +41,9 @@ var import_mimic_response = __toESM(require("@esm2cjs/mimic-response"));
 var import_types = require("./types.js");
 __reExport(esm_exports, require("./types.js"), module.exports);
 class CacheableRequest {
-  constructor(request, cacheAdapter) {
+  constructor(cacheRequest, cacheAdapter) {
     this.hooks = /* @__PURE__ */ new Map();
-    this.createCacheableRequest = () => (options, cb) => {
+    this.request = () => (options, cb) => {
       var _a;
       let url;
       if (typeof options === "string") {
@@ -157,7 +157,7 @@ class CacheableRequest {
           }
         };
         try {
-          const request_ = this.request(options_, handler);
+          const request_ = this.cacheRequest(options_, handler);
           request_.once("error", requestErrorCallback);
           request_.once("abort", requestErrorCallback);
           ee.emit("request", request_);
@@ -237,8 +237,8 @@ class CacheableRequest {
         namespace: "cacheable-request"
       });
     }
-    this.createCacheableRequest = this.createCacheableRequest.bind(this);
-    this.request = request;
+    this.request = this.request.bind(this);
+    this.cacheRequest = cacheRequest;
   }
 }
 const entries = Object.entries;
