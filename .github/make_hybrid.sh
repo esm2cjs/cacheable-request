@@ -63,6 +63,7 @@ PJSON=$(cat package.json | jq --tab '
 	| del(.devDependencies["@types/get-stream"])
 
 	| .scripts["to-cjs"] = "esm2cjs --in build/esm --out build/cjs -t node12"
+	| del(.scripts.prepare)
 	| .xo.ignores = ["build", "test", "**/*.test-d.ts", "**/*.d.ts"]
 	| .xo.rules["@typescript-eslint/no-redundant-type-constituents"] = "off"
 ')
