@@ -25,7 +25,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var esm_exports = {};
 __export(esm_exports, {
-  default: () => esm_default
+  default: () => esm_default,
+  onResponse: () => onResponse
 });
 module.exports = __toCommonJS(esm_exports);
 var import_node_events = __toESM(require("node:events"));
@@ -122,11 +123,11 @@ class CacheableRequest {
                   new Promise((resolve) => response.once("end", resolve))
                 ]);
                 const body = await bodyPromise;
-                const value = {
-                  cachePolicy: response.cachePolicy.toObject(),
+                let value = {
                   url: response.url,
                   statusCode: response.fromCache ? revalidate.statusCode : response.statusCode,
-                  body
+                  body,
+                  cachePolicy: response.cachePolicy.toObject()
                 };
                 let ttl = options_.strictTtl ? response.cachePolicy.timeToLive() : void 0;
                 if (options_.maxTtl) {
@@ -134,7 +135,7 @@ class CacheableRequest {
                 }
                 if (this.hooks.size > 0) {
                   for (const key_ of this.hooks.keys()) {
-                    value.body = await this.runHook(key_, value.body);
+                    value = await this.runHook(key_, value, response);
                   }
                 }
                 await this.cache.set(key, value, ttl);
@@ -217,12 +218,9 @@ class CacheableRequest {
     };
     this.removeHook = (name) => this.hooks.delete(name);
     this.getHook = (name) => this.hooks.get(name);
-    this.runHook = async (name, response) => {
+    this.runHook = async (name, ...args) => {
       var _a;
-      if (!response) {
-        return new import_types.CacheError(new Error("runHooks requires response argument"));
-      }
-      return (_a = this.hooks.get(name)) == null ? void 0 : _a(response);
+      return (_a = this.hooks.get(name)) == null ? void 0 : _a(...args);
     };
     if (cacheAdapter instanceof import_keyv.default) {
       this.cache = cacheAdapter;
@@ -270,6 +268,9 @@ const convertHeaders = (headers) => {
   return result;
 };
 var esm_default = CacheableRequest;
+const onResponse = "onResponse";
 // Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {});
+0 && (module.exports = {
+  onResponse
+});
 //# sourceMappingURL=index.js.map

@@ -100,11 +100,11 @@ class CacheableRequest {
                                     new Promise(resolve => response.once('end', resolve)), // eslint-disable-line no-promise-executor-return
                                 ]);
                                 const body = await bodyPromise;
-                                const value = {
-                                    cachePolicy: response.cachePolicy.toObject(),
+                                let value = {
                                     url: response.url,
                                     statusCode: response.fromCache ? revalidate.statusCode : response.statusCode,
                                     body,
+                                    cachePolicy: response.cachePolicy.toObject(),
                                 };
                                 let ttl = options_.strictTtl ? response.cachePolicy.timeToLive() : undefined;
                                 if (options_.maxTtl) {
@@ -113,7 +113,7 @@ class CacheableRequest {
                                 if (this.hooks.size > 0) {
                                     /* eslint-disable no-await-in-loop */
                                     for (const key_ of this.hooks.keys()) {
-                                        value.body = await this.runHook(key_, value.body);
+                                        value = await this.runHook(key_, value, response);
                                     }
                                     /* eslint-enable no-await-in-loop */
                                 }
@@ -204,12 +204,7 @@ class CacheableRequest {
         };
         this.removeHook = (name) => this.hooks.delete(name);
         this.getHook = (name) => this.hooks.get(name);
-        this.runHook = async (name, response) => {
-            if (!response) {
-                return new CacheError(new Error('runHooks requires response argument'));
-            }
-            return this.hooks.get(name)?.(response);
-        };
+        this.runHook = async (name, ...args) => this.hooks.get(name)?.(...args);
         if (cacheAdapter instanceof Keyv) {
             this.cache = cacheAdapter;
         }
@@ -267,4 +262,5 @@ const convertHeaders = (headers) => {
 };
 export default CacheableRequest;
 export * from './types.js';
+export const onResponse = 'onResponse';
 //# sourceMappingURL=index.js.map

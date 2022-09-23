@@ -8,9 +8,11 @@ import { EventEmitter } from 'node:events';
 import { Buffer } from 'node:buffer';
 import { Store } from 'keyv';
 import ResponseLike from '@esm2cjs/responselike';
+import { CachePolicyObject } from 'http-cache-semantics';
 export declare type RequestFn = typeof request;
 export declare type RequestFunction = typeof request;
-export declare type CacheableRequestFunction = (options: CacheableOptions, cb?: (response: ServerResponse | typeof ResponseLike) => void) => Emitter;
+export declare type CacheResponse = ServerResponse | typeof ResponseLike;
+export declare type CacheableRequestFunction = (options: CacheableOptions, cb?: (response: CacheResponse) => void) => Emitter;
 export declare type CacheableOptions = Options & RequestOptions | string | URL;
 export declare type StorageAdapter = Store<any>;
 export interface Options {
@@ -44,41 +46,48 @@ export interface Options {
  * @default false
  */
     forceRefresh?: boolean | undefined;
+    remoteAddress?: boolean | undefined;
     url?: string | undefined;
     headers?: Record<string, string | string[] | undefined>;
     body?: Buffer;
 }
+export interface CacheValue extends Record<string, any> {
+    url: string;
+    statusCode: number;
+    body: Buffer | string;
+    cachePolicy: CachePolicyObject;
+}
 export interface Emitter extends EventEmitter {
     addListener(event: 'request', listener: (request: ClientRequest) => void): this;
-    addListener(event: 'response', listener: (response: ServerResponse | typeof ResponseLike) => void): this;
+    addListener(event: 'response', listener: (response: CacheResponse) => void): this;
     addListener(event: 'error', listener: (error: RequestError | CacheError) => void): this;
     on(event: 'request', listener: (request: ClientRequest) => void): this;
-    on(event: 'response', listener: (response: ServerResponse | typeof ResponseLike) => void): this;
+    on(event: 'response', listener: (response: CacheResponse) => void): this;
     on(event: 'error', listener: (error: RequestError | CacheError) => void): this;
     once(event: 'request', listener: (request: ClientRequest) => void): this;
-    once(event: 'response', listener: (response: ServerResponse | typeof ResponseLike) => void): this;
+    once(event: 'response', listener: (response: CacheResponse) => void): this;
     once(event: 'error', listener: (error: RequestError | CacheError) => void): this;
     prependListener(event: 'request', listener: (request: ClientRequest) => void): this;
-    prependListener(event: 'response', listener: (response: ServerResponse | typeof ResponseLike) => void): this;
+    prependListener(event: 'response', listener: (response: CacheResponse) => void): this;
     prependListener(event: 'error', listener: (error: RequestError | CacheError) => void): this;
     prependOnceListener(event: 'request', listener: (request: ClientRequest) => void): this;
-    prependOnceListener(event: 'response', listener: (response: ServerResponse | typeof ResponseLike) => void): this;
+    prependOnceListener(event: 'response', listener: (response: CacheResponse) => void): this;
     prependOnceListener(event: 'error', listener: (error: RequestError | CacheError) => void): this;
     removeListener(event: 'request', listener: (request: ClientRequest) => void): this;
-    removeListener(event: 'response', listener: (response: ServerResponse | typeof ResponseLike) => void): this;
+    removeListener(event: 'response', listener: (response: CacheResponse) => void): this;
     removeListener(event: 'error', listener: (error: RequestError | CacheError) => void): this;
     off(event: 'request', listener: (request: ClientRequest) => void): this;
-    off(event: 'response', listener: (response: ServerResponse | typeof ResponseLike) => void): this;
+    off(event: 'response', listener: (response: CacheResponse) => void): this;
     off(event: 'error', listener: (error: RequestError | CacheError) => void): this;
     removeAllListeners(event?: 'request' | 'response' | 'error'): this;
     listeners(event: 'request'): Array<(request: ClientRequest) => void>;
-    listeners(event: 'response'): Array<(response: ServerResponse | typeof ResponseLike) => void>;
+    listeners(event: 'response'): Array<(response: CacheResponse) => void>;
     listeners(event: 'error'): Array<(error: RequestError | CacheError) => void>;
     rawListeners(event: 'request'): Array<(request: ClientRequest) => void>;
-    rawListeners(event: 'response'): Array<(response: ServerResponse | typeof ResponseLike) => void>;
+    rawListeners(event: 'response'): Array<(response: CacheResponse) => void>;
     rawListeners(event: 'error'): Array<(error: RequestError | CacheError) => void>;
     emit(event: 'request', request: ClientRequest): boolean;
-    emit(event: 'response', response: ServerResponse | typeof ResponseLike): boolean;
+    emit(event: 'response', response: CacheResponse): boolean;
     emit(event: 'error', error: RequestError | CacheError): boolean;
     eventNames(): Array<'request' | 'response' | 'error'>;
     listenerCount(type: 'request' | 'response' | 'error'): number;
