@@ -97,11 +97,15 @@ class CacheableRequest {
             }
           };
         });
-        const handler = (response) => {
+        const handler = async (response) => {
           if (revalidate) {
             response.status = response.statusCode;
             const revalidatedPolicy = import_http_cache_semantics.default.fromObject(revalidate.cachePolicy).revalidatedPolicy(options_, response);
             if (!revalidatedPolicy.modified) {
+              response.resume();
+              await new Promise((resolve) => {
+                response.once("end", resolve);
+              });
               const headers = convertHeaders(revalidatedPolicy.policy.responseHeaders());
               response = new import_responselike.default({ statusCode: revalidate.statusCode, headers, body: revalidate.body, url: revalidate.url });
               response.cachePolicy = revalidatedPolicy.policy;

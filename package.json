@@ -1,6 +1,6 @@
 {
 	"name": "@esm2cjs/cacheable-request",
-	"version": "10.2.0",
+	"version": "10.2.1",
 	"description": "Wrap native HTTP requests with RFC compliant cache support. This is a fork of jaredwray/cacheable-request, but with CommonJS support.",
 	"license": "MIT",
 	"repository": "esm2cjs/cacheable-request",
@@ -43,6 +43,7 @@
 		"@esm2cjs/mimic-response": "^4.0.0",
 		"@esm2cjs/normalize-url": "^7.1.0",
 		"@esm2cjs/responselike": "^3.0.0",
+		"@types/http-cache-semantics": "^4.0.1",
 		"get-stream": "^6.0.1",
 		"http-cache-semantics": "^4.1.0",
 		"keyv": "^4.5.0"
@@ -50,7 +51,6 @@
 	"devDependencies": {
 		"@keyv/sqlite": "^3.6.1",
 		"@types/create-test-server": "^3.0.1",
-		"@types/http-cache-semantics": "^4.0.1",
 		"@types/jest": "^29.0.3",
 		"@types/node": "^18.7.18",
 		"@types/sqlite3": "^3.1.8",
