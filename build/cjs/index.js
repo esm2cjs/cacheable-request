@@ -124,7 +124,8 @@ class CacheableRequest {
                 const bodyPromise = import_get_stream.default.buffer(response);
                 await Promise.race([
                   requestErrorPromise,
-                  new Promise((resolve) => response.once("end", resolve))
+                  new Promise((resolve) => response.once("end", resolve)),
+                  new Promise((resolve) => response.once("close", resolve))
                 ]);
                 const body = await bodyPromise;
                 let value = {
@@ -165,6 +166,7 @@ class CacheableRequest {
           const request_ = this.cacheRequest(options_, handler);
           request_.once("error", requestErrorCallback);
           request_.once("abort", requestErrorCallback);
+          request_.once("destroy", requestErrorCallback);
           ee.emit("request", request_);
         } catch (error) {
           ee.emit("error", new import_types.RequestError(error));
