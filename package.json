@@ -1,6 +1,6 @@
 {
 	"name": "@esm2cjs/cacheable-request",
-	"version": "10.2.4",
+	"version": "10.2.5",
 	"description": "Wrap native HTTP requests with RFC compliant cache support. This is a fork of jaredwray/cacheable-request, but with CommonJS support.",
 	"license": "MIT",
 	"repository": "esm2cjs/cacheable-request",
@@ -39,17 +39,20 @@
 		"7234",
 		"compliant"
 	],
+	"dependenciesComments": {
+		"@types/http-cache-semantics": "It needs to be in the dependencies list and not devDependencies because otherwise projects that use this one will be getting `Could not find a declaration file for module 'http-cache-semantics'` error when running `tsc`, see https://github.com/jaredwray/cacheable-request/issues/194 for details"
+	},
 	"dependencies": {
 		"@esm2cjs/mimic-response": "^4.0.0",
 		"@esm2cjs/normalize-url": "^8.0.0",
 		"@esm2cjs/responselike": "^3.0.0",
+		"@types/http-cache-semantics": "^4.0.1",
 		"get-stream": "^6.0.1",
 		"http-cache-semantics": "^4.1.0",
 		"keyv": "^4.5.2"
 	},
 	"devDependencies": {
 		"@keyv/sqlite": "^3.6.4",
-		"@types/http-cache-semantics": "^4.0.1",
 		"@types/jest": "^29.2.4",
 		"@types/node": "^18.11.17",
 		"@types/sqlite3": "^3.1.8",
