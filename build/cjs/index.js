@@ -175,7 +175,7 @@ class CacheableRequest {
         const get = async (options_) => {
           await Promise.resolve();
           const cacheEntry = options_.cache ? await this.cache.get(key) : void 0;
-          if (typeof cacheEntry === "undefined" && !options_.forceRefresh) {
+          if (cacheEntry === void 0 && !options_.forceRefresh) {
             makeRequest(options_);
             return;
           }
